@@ -1,0 +1,192 @@
+%%%
+%%% Master's Thesis Template File by Niklas Fors
+%%%
+\documentclass[a4paper,oneside,12pt]{article}
+%\documentclass[numbers=noenddot,a4paper,oneside,12pt]{book}
+%\documentclass[a4paper,oneside,12pt]{report}
+
+% use the mastersthesis package, that contains all
+% the Master's Thesis specific macros and stuff.
+% see mastersthesis.sty for details
+% you can specify your thesis language as an option
+% (only english and swedish are supported)
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	left=25mm,
+	right=25mm,
+	top=25mm,
+	bottom=25mm,
+}
+\usepackage[english]{mastersthesis}
+\usepackage{multirow}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{setspace}
+\usepackage{pdfpages}
+\usepackage[style=apa,backend=biber]{biblatex}
+\usepackage{mathptmx}% http://ctan.org/pkg/mathptmx
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+\makeatother
+% For Swedish localisation.
+\DeclareLanguageMapping{british}{british-apa}
+\addbibresource{references.bib}
+\setcounter{tocdepth}{2}
+
+%% ------------------- document layout -------------------- %%
+% adjust document margin size here in the following order:
+% left, top, right, bottom
+
+% adjust line spacing here
+\setlinespacing{1.5}
+%% -------------------------------------------------------- %%
+
+
+
+
+%% ------------------ thesis information ------------------ %%
+\setauthor{Lars Stoltenberg Grove \\ Emil Aura}
+\setauthormatrnr{}
+\settitle{Title goes here}
+% uncomment the following line to specify an examiner,
+% if different from the supervisor
+%\setexaminer{Insert Examiner Name Here}
+\setlaboratory{University of Tromsø School of Aviation}
+\setfaculty{Department of Engineering and Safety }
+\setuniversity{UiT The Arctic University of Norway }
+%% -------------------------------------------------------- %%
+
+
+%% ------------------- other options ---------------------- %%
+% uncomment the following line to use hyper-references
+\usehyperrefs
+\hypersetup{pdfauthor={Lars Stoltenberg Grove \\ Emil Aura}}
+% uncomment the following line to specify the desired
+% language for the listings package
+%\setlistingslanguage{Java}
+
+% uncomment the following lines to include a list of that
+% particular type
+
+% list of tables used in the document
+%\includelistoftables
+
+% list of code listings
+%\includelistoflistings
+
+% list of algorithms defined
+%\includelistofalgorithms
+
+% add extra hyphenation patterns here
+%\hyphenation{pro-gram-mable}
+
+% uncomment the following lines to try to fix line-breaking
+% if latex fails to do it properly
+%\setlength{\emergencystretch}{2em}
+%\tolerance 200
+%% -------------------------------------------------------- %%
+
+
+\begin{document}
+	
+	%% --------------------- title page ----------------------- %%
+	\newgeometry{top=10mm,bottom=10mm}
+	\thesistitlepage
+	\restoregeometry
+	%% -------------------------------------------------------- %%
+	
+	
+	%% ---------------------- abstract ------------------------ %%
+	\begin{thesisforeword}
+	
+
+	\end{thesisforeword}
+	\begin{thesisabstract}
+	
+		
+		
+		\textbf{Keywords:} \emph{}
+	\end{thesisabstract}
+	
+	%\include{abstract}
+	%% -------------------------------------------------------- %%
+	
+	
+	%% ------------------- table of contents ------------------ %%
+	\thesiscontentspage
+	%% -------------------------------------------------------- %%
+	
+	
+	%% --------------------- abbreviations --------------------- %%
+	\begin{thesisabbreviations}
+		%Put your abbreviations here, or move this section to a 
+		%separate file named ``abbreviations.tex'', and uncomment 
+		%the include line below.
+		
+		% table of abbreviations
+		\begin{abbreviationstable}
+			% an example entry in the table
+			\abbreviation{CoC}{Constant of the cone}
+		\end{abbreviationstable}
+		
+	\end{thesisabbreviations}
+	
+	%\include{abbreviations}
+	%% -------------------------------------------------------- %%
+	
+	\pagenumbering{arabic}
+	
+	
+	
+	
+	%% --------------------- thesis body ---------------------- %%
+	\include{Chapters/1_intro}
+	%\include{Chapters/2_problem}
+	%\include{Chapters/3_metod}
+	%\include{Chapters/4_teori}
+	%\include{Chapters/5_resultat}
+	%\include{Chapters/6_diskussion}
+	%\include{Chapters/7_sammanfattning}
+	%% -------------------------------------------------------- %%
+	
+	%% ------------------- swedish summary -------------------- %%
+	% only for english thesis, this section will automatically
+	% be ignored in a swedish thesis (it is also safe to remove
+	% this section completely in a swedish thesis)
+	\ifdefined\englishthesis
+	%\include{Chapters/swe_sum}
+	
+	\fi
+	%% -------------------------------------------------------- %%
+	
+	
+	%% -------------------- bibliography ---------------------- %%
+	% see references.bib for example bibtex references
+	\renewcommand\bibname{References}
+	\nocite{*}
+	%\bibliographystyle{ieeetr}
+	%\bibliographystyle{ieeetr}
+	
+	% use references.bib as bibliography database
+
+	\setstretch{1}
+	\setlength\bibitemsep{3pt}
+	\printbibliography
+	\newpage
+	%% -------------------------------------------------------- %%
+	
+	
+	\appendix
+	%% --------------------- appendices ----------------------- %%
+	%\chapter{Example appendix}
+	%This is an example appendix. Place appendices here, or 
+	%move this section to a separate file/files.
+	
+	%\include{Appendixes/appendix1}
+	%\include{Appendixes/appendix2}
+	%% -------------------------------------------------------- %%
+	
+	
+\end{document}

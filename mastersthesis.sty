@@ -1,0 +1,388 @@
+%%%
+%%% Master's Thesis Style File by Niklas Fors,
+%%% based on a template by Johan Ersfolk
+%%% and with some improvements by Martin Storsj�
+%%%
+%%% Available options:
+%%% english		use english as the language for the thesis
+%%% swedish		use swedish as the language for the thesis
+%%% newstyle		use chapter headings that look like in report-new.cls
+
+\ProvidesPackage{mastersthesis}
+
+
+%% options
+
+% some initial definitions that are changed in the options:
+% languages to load (the last one specified is used)
+\newcommand{\languagestoload}{swedish,english}
+% language in use
+\newcommand{\thesislanguage}{english}
+
+% chapter headings option
+\DeclareOption{newstyle}{
+	%% this is taken from report-new.cls, to make chapter headings look like in report-new
+	\def\@makechapterhead#1{%
+		%\vspace*{50\p@}%
+		{\parindent \z@ \raggedright \normalfont
+			\interlinepenalty\@M
+			\Huge \bfseries \thechapter. #1\par\nobreak
+			\vskip 40\p@
+		}}
+	}
+	
+	% swedish masters thesis
+	\DeclareOption{swedish}{
+		% switch order of languages (the last one specified is used)
+		\renewcommand{\languagestoload}{english,swedish}
+		\renewcommand{\thesislanguage}{swedish}
+		% define swedishthesis, so that \ifdefined\swedishthesis statements will be evaluated to true
+		\def\swedishthesis
+		% the following should be done somewhere?
+		%\selectlanguage{swedish}
+	}
+	
+	% english masters thesis
+	\DeclareOption{english}{
+		% switch order of languages (the last one specified is used)
+		\renewcommand{\languagestoload}{swedish,english}
+		\renewcommand{\thesislanguage}{english}
+		% define englishthesis, so that \ifdefined\swedishthesis statements will be evaluated to true
+		\def\englishthesis
+		% the following should be done somewhere?
+		%\selectlanguage{english}
+	}
+	
+	%% end of options
+	\ProcessOptions
+	
+	
+	%% load needed packages
+	\usepackage[utf8]{inputenc}			% input encoding that should support swedish characters on all systems
+	\usepackage[T1]{fontenc}				% needed for swedish thesis atleast, and for some special characters
+	\usepackage{lmodern}				% needed in combination with [T1] fontenc, to make fonts behave nicely
+	\usepackage[british]{babel}	% use english or swedish hyphenation
+	\usepackage[pdftex]{graphicx}			% graphics package (needed here for includegraphics)
+	\usepackage{tocbibind}				% adds contents, bibliography and listoffigures to the contents page
+	\usepackage{longtable}				% for better tables
+	\usepackage{amsmath}				% math stuff
+	\usepackage{listings}				% for listing code snippets
+	\usepackage{url}					% for better url typesetting
+	\usepackage{algorithm}				% for algorithm figures
+	\usepackage{algorithmic}				% for creating algorithms
+	\usepackage{changepage}
+	\newenvironment{bottompar}{\par\vspace*{\fill}}{\clearpage}
+	% fix for the list of algorithms command to work with tocbibind
+	\renewcommand{\listofalgorithms}{\begingroup 
+		\tocfile{List of Algorithms}{loa} 
+		\endgroup} 
+	\makeatletter 
+	\let\l@algorithm\l@figure 
+	\makeatother
+	
+	% fix for the algorithms package on some linux versions
+	% \RETURN does not seem to be defined in older algorithms versions...
+	%\newcommand{\RETURN}{\STATE \textbf{return} }
+	
+	
+	% settings for the listings package
+	% default language is c++
+	\lstset{
+		language=Matlab,
+		numbers=left,
+		commentstyle=\textit,
+		basicstyle=\footnotesize,
+		tabsize=2,
+		breaklines=true,
+		breakatwhitespace=false,
+		showstringspaces=false
+	}
+	
+	
+	%% document layouting
+	% default linespacing 1.3
+	\linespread{1.2}
+	% no paragraph indenting
+	\parindent0pt
+	% empty line between paragraphs
+	\parskip\medskipamount
+	
+	%% chapter headings style definitions
+	% the following line can be used to re-define the 'Chapter' text in the chapter heading
+	%\def\@chapapp{Chapter}
+	
+	%% layout commands
+	% set line spacing
+	\newcommand{\setlinespacing}[1]{\linespread{#1}}
+	% set margins
+	% NOTE: only use the following command in the preamble!
+	\newcommand{\setmargins}[4]{
+		\usepackage[left=#1,top=#2,right=#3,bottom=#4]{geometry}
+	}
+	
+	
+	%% information commands
+	
+	\newcommand{\thesisauthor}{Thesis Author}
+	\newcommand{\thesisauthormatrnr}{00000}
+	\newcommand{\thesistitle}{Thesis Title}
+	\newcommand{\thesissupervisor}{Supervisor}
+	\newcommand{\thesisexaminer}{Examiner}
+	\newcommand{\thesislaboratory}{Embedded Systems Laboratory}
+	\newcommand{\thesisfaculty}{Faculty of Technology}
+	\newcommand{\thesisuniversity}{�bo Akademi University}
+	\newcommand{\thesisdate}{\today}
+	%% optional set-commands
+	%% (for ease-of-use)
+	\newcommand{\setauthor}[1]{\renewcommand{\thesisauthor}{#1}}
+	\newcommand{\setauthormatrnr}[1]{\renewcommand{\thesisauthormatrnr}{#1}}
+	\newcommand{\settitle}[1]{\renewcommand{\thesistitle}{#1}}
+	\newcommand{\setsupervisor}[1]{\renewcommand{\thesissupervisor}{#1}}
+	\newcommand{\setexaminer}[1]{\renewcommand{\thesisexaminer}{#1}\def\examinerspecified}
+	\newcommand{\setlaboratory}[1]{\renewcommand{\thesislaboratory}{#1}}
+	\newcommand{\setfaculty}[1]{\renewcommand{\thesisfaculty}{#1}}
+	\newcommand{\setuniversity}[1]{\renewcommand{\thesisuniversity}{#1}}
+	
+	
+	%% other options
+	% hyperrefs for the contents page
+	% NOTE: only use the following command in the preamble!
+	\newcommand{\usehyperrefs}{
+		\usepackage[pdfpagelabels]{hyperref}
+		\hypersetup{
+			colorlinks=true,
+			linkcolor=black,
+			citecolor=black,
+			filecolor=black,
+			urlcolor=black,
+			pdftitle=\thesistitle,
+			pdfauthor=\thesisauthor,
+			plainpages=false,
+		}
+		\usepackage[all]{hypcap}
+		% fix for the algorithm package to work with hyperrefs
+		\newcommand{\theHalgorithm}{\arabic{algorithm}}
+	}
+	
+	% set listings language
+	\newcommand{\setlistingslanguage}[1]{\lstset{language=#1}}
+	
+	% use list of tables
+	\newcommand{\includelistoftables}{\def\uselistoftables{}}
+	
+	% use list of listings
+	\newcommand{\includelistoflistings}{\def\uselistoflistings{}}
+	
+	% use list of algorithms
+	\newcommand{\includelistofalgorithms}{\def\uselistofalgorithms{}}
+	
+	
+	%% title page
+	%% this creates the master's thesis title page
+	\newcommand{\thesistitlepage}{
+		% switch to uppercase roman page numbering
+		\pagenumbering{Roman}
+		
+		\begin{titlepage}
+			\begin{adjustwidth}{-1.5cm}{-1.5cm}
+				\includegraphics{pictures/UiT_Navn_linje_en_turkis1_cropped}
+			\end{adjustwidth} 
+			% thesis title centered and in big bold fonts
+			\begin{center}
+				\LARGE\textbf{\thesistitle}
+				\par
+				
+				% thesis author name and matriculation number below in normal text
+				{\large
+					\vspace{5mm}
+					
+					\begin{tabular}[t]{c}
+						\thesisauthor \\
+						\thesisauthormatrnr
+					\end{tabular}}
+					\par
+					
+				\end{center}
+				
+				\vspace{110mm}
+				
+				% additional information to the bottom right
+				\begin{flushright}
+					\ifdefined\swedishthesis
+					Report in Human Performance \& Limitations  \\
+					%Handledare: \thesissupervisor \\
+					%\ifdefined\examinerspecified
+					%�vervakare: \thesisexaminer
+					%\fi
+					\else
+					Report in Human Performance \& Limitations  \\
+					\ifdefined\examinerspecified
+					Examiner: \thesisexaminer \\
+					\fi
+					\fi
+					\thesislaboratory \\
+					\thesisfaculty \\
+					\thesisuniversity \\
+					\thesisdate \\
+					\vspace{5mm}
+				\end{flushright}
+				\begin{bottompar}
+					
+					\begin{adjustwidth}{-1.5cm}{-1.5cm}
+						\begin{flushright}
+							{\fontsize{8pt}{1em}\selectfont PO Box 6050 Langnes, NO-9037 Troms\o ~/ 77 64 40 00 / postmottak@uit.no / uit.no}
+							\includegraphics[width=15mm]{pictures/Logo_eng_pos.pdf}
+						\end{flushright}
+					\end{adjustwidth} 
+				\end{bottompar}
+			\end{titlepage}
+		}
+		
+		
+		%% contents pages
+		\newcommand{\thesiscontentspage}{
+			% table of contents
+			\begin{spacing}{1}
+				\tableofcontents
+			\end{spacing}
+			% list of figures
+			%\listoffigures
+			
+			% list of tables
+			\ifdefined\uselistoftables
+			\listoftables
+			\fi
+			
+			% list of code listings
+			\ifdefined\uselistoflistings
+			\lstlistoflistings
+			\fi
+			
+			% list of algorithms
+			\ifdefined\uselistofalgorithms
+			\listofalgorithms
+			\fi
+			
+			\newpage
+		}
+		
+		\newenvironment{nbquote}
+		{\quote\interlinepenalty=10000 }
+		{\endquote}
+		%% abstract page
+		\newenvironment{thesisforeword}{
+			% add some space at the top of the abstract page, to make it look like latex abstract environment
+			\vspace*{60mm}
+			\paragraph{}	% needed as a destination for hyperrefs
+			\ifdefined\swedishthesis
+			% add the sammandrag to the table of contents
+			\addcontentsline{toc}{section}{Förord}
+			% Sammandrag text centered and bold
+			{\centering \bfseries Förord \par}
+			\else
+			% add the abstract to the table of contents
+			\addcontentsline{toc}{section}{Foreword}
+			% Abstract text centered and bold
+			{\centering \bfseries Foreword \par}
+			\fi
+			% add some space, to make it look like latex abstract environment
+			\vspace*{5mm}
+		}
+		{
+			\newpage
+		}
+		
+		
+		%% abstract page
+		\newenvironment{thesisabstract}{
+			% add some space at the top of the abstract page, to make it look like latex abstract environment
+			\vspace*{20mm}
+			\paragraph{}	% needed as a destination for hyperrefs
+			\ifdefined\swedishthesis
+			% add the sammandrag to the table of contents
+			\addcontentsline{toc}{section}{Sammanfattning}
+			% Sammandrag text centered and bold
+			{\centering \bfseries Sammanfattning \par}
+			\else
+			% add the abstract to the table of contents
+			\addcontentsline{toc}{section}{Abstract}
+			% Abstract text centered and bold
+			{\centering \bfseries Abstract \par}
+			\fi
+			% add some space, to make it look like latex abstract environment
+			\vspace*{5mm}
+		}
+		{
+			\newpage
+		}
+		
+		
+		%% abbreviations page
+		\newenvironment{thesisabbreviations}{
+			\ifdefined\swedishthesis
+			\section*{Förkortningar}
+			% add the förkortningar to the table of contents
+			\addcontentsline{toc}{section}{Förkortningar}
+			\else
+			\section*{Abbreviations}
+			% add the abbreviations to the table of contents
+			\addcontentsline{toc}{section}{Abbreviations}
+			\fi
+		}
+		{
+			\newpage
+			%\ifdefined\swedishthesis
+			% switch to normal arabic page numbering
+			
+			%\fi
+		}
+		
+		%% abbreviations table
+		\newenvironment{abbreviationstable}{
+			\begin{longtable}{@{}p{2cm}p{10.8cm}}
+			}
+			{
+			\end{longtable}
+		}
+		
+		
+		%% abbrevation entry
+		\newcommand{\abbreviation}[2]{#1&#2 \\}
+		
+		
+		
+		%% swedish summary page
+		\newenvironment{thesisswedishsummary}{
+			% switch to swedish hyphenation
+			\selectlanguage{swedish}
+			\chapter*{Sammanfattning}
+			% add the swedish summary to the table of contents
+			\addcontentsline{toc}{chapter}{Swedish summary}
+		}
+		{
+			% switch back to english hyphenation
+			\selectlanguage{english}
+			\newpage
+		}
+		
+		
+		%% insert picture macro
+		%% first optional argument is the short caption (for the list of figures)
+		%% first required argument is filename
+		%% second required argument is picture width
+		%% third required argument is caption
+		%% fourth required argument is reference label
+		% temporary macro for the short caption
+		\newcommand{\shortcaption}{temp}
+		\newcommand{\insertpicture}[5][1]{
+			% if optional argument is '1'  (the default), use argument 4 as short caption, otherwise use argument 1
+			\ifthenelse{\equal{#1}{1}}{\renewcommand{\shortcaption}{#4}}{\renewcommand{\shortcaption}{#1}}
+			\begin{figure}[tbp]
+				\centering
+				\includegraphics[width=#3]{#2}
+				\caption[\shortcaption]{#4}
+				\label{#5}
+			\end{figure}
+		}
+		
+		%%% end of mastersthesis.sty
